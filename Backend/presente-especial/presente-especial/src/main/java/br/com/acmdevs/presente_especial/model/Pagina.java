@@ -1,0 +1,54 @@
+package br.com.acmdevs.presente_especial.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+@Entity
+@Table(name = "tb_pagina")
+@Getter
+@Setter
+public class Pagina implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "plano_id", nullable = false)
+    private Plano plano;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @Column(nullable = false)
+    private String mensagem;
+
+    public Pagina() {}
+
+    public Pagina(Long id, String mensagem, Usuario usuario, Plano plano) {
+        this.id = id;
+        this.mensagem = mensagem;
+        this.usuario = usuario;
+        this.plano = plano;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pagina pagina = (Pagina) o;
+        return Objects.equals(id, pagina.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+}
