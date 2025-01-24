@@ -6,45 +6,44 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_plano")
+@Table(name = "tb_destinatarios")
 @Getter
 @Setter
-public class Plano implements Serializable {
-
+public class Destinatarios implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
     private String nome;
-    @Column(nullable = false)
-    private String descricao;
-    @Column(precision = 10, scale = 2)
-    private BigDecimal preco;
-    @Column(nullable = false)
-    private Integer tempoDuracao;
 
+    @Column(length = 12)
+    private String numeroTelefone;
 
-    public Plano() {}
+    @ManyToOne
+    @JoinColumn(name = "pagina_id", nullable = false)
+    private Pagina pagina;
 
-    public Plano(Long id, String nome, String descricao, BigDecimal preco, Integer tempoDuracao) {
+    public Destinatarios() {
+    }
+
+    public Destinatarios(Long id, String nome, String numeroTelefone, Pagina pagina) {
         this.id = id;
         this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.tempoDuracao = tempoDuracao;
+        this.numeroTelefone = numeroTelefone;
+        this.pagina = pagina;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Plano plano = (Plano) o;
-        return Objects.equals(id, plano.id);
+        Destinatarios that = (Destinatarios) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
