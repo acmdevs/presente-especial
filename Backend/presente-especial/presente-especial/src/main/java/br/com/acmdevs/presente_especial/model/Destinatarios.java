@@ -29,8 +29,7 @@ public class Destinatarios implements Serializable {
     @JoinColumn(name = "pagina_id", nullable = false)
     private Pagina pagina;
 
-    public Destinatarios() {
-    }
+    public Destinatarios() {}
 
     public Destinatarios(Long id, String nome, String numeroTelefone, Pagina pagina) {
         this.id = id;
@@ -48,6 +47,6 @@ public class Destinatarios implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
     }
 }

@@ -17,18 +17,22 @@ public class Plano implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String nome;
+
     @Column(nullable = false)
     private String descricao;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal preco;
+
     @Column(nullable = false)
     private Integer tempoDuracao;
-
 
     public Plano() {}
 
@@ -49,6 +53,6 @@ public class Plano implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
     }
 }

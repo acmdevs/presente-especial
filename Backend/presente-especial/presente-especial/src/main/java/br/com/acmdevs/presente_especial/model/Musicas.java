@@ -28,7 +28,7 @@ public class Musicas implements Serializable {
     @Column(nullable = false)
     private String url;
 
-    public Musicas(){}
+    public Musicas() {}
 
     public Musicas(Long id, Pagina pagina, String url) {
         this.id = id;
@@ -45,6 +45,6 @@ public class Musicas implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
     }
 }
