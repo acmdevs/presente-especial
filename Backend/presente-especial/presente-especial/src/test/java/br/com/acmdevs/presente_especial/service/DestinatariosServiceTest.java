@@ -5,6 +5,9 @@ import br.com.acmdevs.presente_especial.repository.DestinatariosRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -37,21 +40,23 @@ public class DestinatariosServiceTest {
 
     @Test
     void testBuscarDestinatarioPorId() {
-        when(destinatariosRepository.findById(1L)).thenReturn(java.util.Optional.of(destinatarios));
+        when(destinatariosRepository.findById(1L)).thenReturn(Optional.of(destinatarios));
 
-        Destinatarios result = destinatariosService.buscarDestinatarioPorId(1L);
+        Optional<Destinatarios> result = destinatariosService.buscarDestinatarioPorId(1L);
 
-        assertNotNull(result);
-        assertEquals("João", result.getNome());
-        assertEquals("123456789", result.getNumeroTelefone());
+        assertTrue(result.isPresent());
+        Destinatarios destinatario = result.get();
+        assertEquals("João", destinatario.getNome());
+        assertEquals("123456789", destinatario.getNumeroTelefone());
     }
 
     @Test
     void testBuscarDestinatarioPorId_NotFound() {
-        when(destinatariosRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+        when(destinatariosRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Destinatarios result = destinatariosService.buscarDestinatarioPorId(1L);
+        Optional<Destinatarios> result = destinatariosService.buscarDestinatarioPorId(1L);
 
-        assertNull(result);
+        assertFalse(result.isPresent()); // Verifica se o Optional não contém valor
     }
+
 }

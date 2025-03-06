@@ -11,10 +11,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,7 +42,7 @@ public class DestinatariosControllerTest {
         Destinatarios destinatarios = new Destinatarios(1L, "João", "123456789", null);
         when(destinatariosService.criarDestinatario(any(Destinatarios.class))).thenReturn(destinatarios);
 
-        mockMvc.perform(post("/destinatarios")
+        mockMvc.perform(post("/api/destinatarios")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(destinatarios)))
                 .andExpect(status().isCreated())
@@ -53,7 +55,7 @@ public class DestinatariosControllerTest {
         Destinatarios destinatarios = new Destinatarios(1L, "João", "123456789", null);
         when(destinatariosService.buscarDestinatarioPorId(1L)).thenReturn(Optional.of(destinatarios));
 
-        mockMvc.perform(get("/destinatarios/1"))
+        mockMvc.perform(get("/api/destinatarios/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("João"))
                 .andExpect(jsonPath("$.numeroTelefone").value("123456789"));
@@ -61,9 +63,16 @@ public class DestinatariosControllerTest {
 
     @Test
     void testGetDestinatarioById_NotFound() throws Exception {
-        when(destinatariosService.buscarDestinatarioPorId(1L)).thenReturn(null);
+        when(destinatariosService.buscarDestinatarioPorId(1L)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/destinatarios/1"))
-                .andExpect(status().isNotFound());
+        MvcResult result = mockMvc.perform(get("/api/destinatarios/1"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+
+        String responseBody = result.getResponse().getContentAsString();
+        System.out.println("Resposta: " + responseBody);
+        assertThat(responseBody).isEmpty();
     }
+
 }

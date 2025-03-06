@@ -5,6 +5,9 @@ import br.com.acmdevs.presente_especial.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -37,21 +40,22 @@ public class UsuarioServiceTest {
 
     @Test
     void testBuscarUsuarioPorId() {
-        when(usuarioRepository.findById(1L)).thenReturn(java.util.Optional.of(usuario));
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
 
-        Usuario result = usuarioService.buscarUsuarioPorId(1L);
+        Optional<Usuario> result = usuarioService.buscarUsuarioPorId(1L);
 
-        assertNotNull(result);
-        assertEquals("João", result.getNome());
-        assertEquals("joao@example.com", result.getEmail());
+        assertTrue(result.isPresent());
+        Usuario usuario = result.get();
+        assertEquals("João", usuario.getNome());
+        assertEquals("joao@example.com", usuario.getEmail());
     }
 
     @Test
     void testBuscarUsuarioPorId_NotFound() {
-        when(usuarioRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Usuario result = usuarioService.buscarUsuarioPorId(1L);
+        Optional<Usuario> result = usuarioService.buscarUsuarioPorId(1L);
 
-        assertNull(result);
+        assertFalse(result.isPresent());
     }
 }

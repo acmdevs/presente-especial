@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class SecurityConfigTest {
     @Test
     void testUserAccess() throws Exception {
         // Simulando autenticação do usuário 'user' com o papel 'USER'
-        User normalUser = new User("user", "password", List.notify(new SimpleGrantedAuthority("ROLE_USER")));
+        User normalUser = new User("user", "password", List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(normalUser, "password", normalUser.getAuthorities()));
 
         mockMvc.perform(get("/user"))
